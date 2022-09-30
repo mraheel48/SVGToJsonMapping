@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                     val svgTexty = sVGModel.svg.text?.transform?.replace("translate", "")
                         ?.substringAfterLast(" ")?.substringBeforeLast(")")
 
-                    val svgPath = sVGModel.svg.path?.get(1)?.d
+                    val svgPath = sVGModel.svg.path?.get(0)?.d
 
                     Log.d("myTextStyle", "$svgPath")
 
@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                         }
 
                         svgText?.let {
+
                             val newText = TextView(this@MainActivity)
                             newText.text = it
 
@@ -94,7 +95,7 @@ class MainActivity : AppCompatActivity() {
                             workerHandler.postDelayed({
 
                                 if (svgTexty != null) {
-                                    newText.y = 480f - newText.height
+                                    newText.y = 550f - newText.height
                                 }
 
                                 if (svgTextX != null) {
@@ -108,8 +109,8 @@ class MainActivity : AppCompatActivity() {
                             newImageView.setImageDrawable(
                                 VectorDrawableCreator.getVectorDrawable(
                                     this,
-                                    1000,
-                                    1000,
+                                    720,
+                                    720,
                                     1000f,
                                     1000f,
                                     pathList2
