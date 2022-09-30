@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.TypedValue
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.svgtojsonmapping.dataModel.SVGModel
@@ -53,11 +54,17 @@ class MainActivity : AppCompatActivity() {
                         sVGModel.svg.text?.style?.substringAfterLast("font-family:")
                             ?.substringBeforeLast(",")
 
-                    val svgTextX = sVGModel.svg.text?.transform?.replace("translate","")?.substringAfterLast("(")?.substringBeforeLast(" ")
+                    val svgTextX = sVGModel.svg.text?.transform?.replace("translate", "")
+                        ?.substringAfterLast("(")?.substringBeforeLast(" ")
 
-                    val svgTexty = sVGModel.svg.text?.transform?.replace("translate","")?.substringAfterLast(" ")?.substringBeforeLast(")")
+                    val svgTexty = sVGModel.svg.text?.transform?.replace("translate", "")
+                        ?.substringAfterLast(" ")?.substringBeforeLast(")")
 
-                    Log.d("myTextStyle", "$svgTexty")
+                    val svgPath = sVGModel.svg.path?.get(1)?.d
+
+                    Log.d("myTextStyle", "$svgPath")
+
+                    val pathList2 = listOf(PathData(svgPath, Color.parseColor("#ffffff")))
 
                     workerHandler.post {
                         rectColorStyle?.let {
@@ -84,18 +91,32 @@ class MainActivity : AppCompatActivity() {
 
                             mainBinding.mainRoot.addView(newText)
 
-                           workerHandler.postDelayed({
+                            workerHandler.postDelayed({
 
-                               if (svgTexty != null){
-                                   newText.y = 480f - newText.height
-                               }
+                                if (svgTexty != null) {
+                                    newText.y = 480f - newText.height
+                                }
 
-                               if (svgTextX != null){
-                                   newText.x = 90f
-                               }
+                                if (svgTextX != null) {
+                                    newText.x = 90f
+                                }
 
-                           },500)
+                            }, 500)
 
+                            val newImageView = ImageView(this@MainActivity)
+
+                            newImageView.setImageDrawable(
+                                VectorDrawableCreator.getVectorDrawable(
+                                    this,
+                                    1000,
+                                    1000,
+                                    1000f,
+                                    1000f,
+                                    pathList2
+                                )
+                            )
+
+                            mainBinding.mainRoot.addView(newImageView)
                         }
                     }
 
